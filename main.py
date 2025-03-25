@@ -1,5 +1,5 @@
 from redis import Redis
-from config import settings
+from config import settings, Coordinates
 
 cache = Redis(
     host=settings.REDIS_HOST,
@@ -8,6 +8,10 @@ cache = Redis(
 
 cache.set("a", "b")
 cache.setex("b", 3600, "hello")
+
+
+moscow = Coordinates("Moscow", 37.617698, 55.755864)
+cache.geoadd("cities2", moscow.get())
 
 a = [1, 2, 3]
 
@@ -23,3 +27,4 @@ print(cache.get("a"))
 print(cache.lrange("from_py", 0, -1))
 print(cache.hget("user:1002", "age"))
 print(cache.hget("user:1002", "name"))
+print(cache.geopos("cities2", "Moscow"))
